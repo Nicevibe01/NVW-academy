@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NVW² Academy – Courses</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080714;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.09);
+      --text: #e8e4ff;
+      --muted: rgba(180,170,230,0.5);
+      --accent: #a78bfa;
+      --accent-dim: rgba(167,139,250,0.15);
+      --green: #4ade80;
+      --red: #f87171;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Sora', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* orbs */
+    .orb { position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0; }
+    .o1 { width:500px;height:500px;background:rgba(100,80,220,0.22);top:-180px;left:-180px;animation:breathe 10s ease-in-out infinite; }
+    .o2 { width:420px;height:420px;background:rgba(30,80,200,0.16);bottom:-140px;right:-140px;animation:breathe 12s ease-in-out infinite reverse; }
+    @keyframes breathe { 0%,100%{transform:scale(1);}50%{transform:scale(1.08);} }
+
+    /* particles */
+    #pts { position:fixed;inset:0;z-index:0;pointer-events:none; }
+    .pt { position:absolute;border-radius:50%;background:rgba(140,120,255,0.4);animation:rise linear infinite; }
+    @keyframes rise { 0%{transform:translateY(105vh);opacity:0;}8%{opacity:1;}92%{opacity:.35;}100%{transform:translateY(-5vh);opacity:0;} }
+
+    .wrap { position:relative;z-index:1;max-width:980px;margin:0 auto;padding:28px 18px 80px; }
+
+    /* ── NAV ── */
+    nav {
+      display:flex;justify-content:space-between;align-items:center;
+      background:rgba(100,80,220,0.12);border:1px solid rgba(130,110,240,0.25);
+      backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+      border-radius:16px;padding:12px 22px;margin-bottom:44px;
+      box-shadow:0 2px 20px rgba(0,0,0,.35);
+      animation:down .6s cubic-bezier(.16,1,.3,1) both;
+    }
+    .logo { font-size:17px;font-weight:800;color:#c4b5fd;letter-spacing:.05em; }
+    .nav-links { display:flex;gap:6px;align-items:center; }
+    .nav-links a {
+      font-size:12px;font-weight:500;color:var(--muted);
+      text-decoration:none;padding:6px 14px;border-radius:10px;
+      border:1px solid transparent;transition:all .2s;
+    }
+    .nav-links a:hover { color:var(--text);border-color:var(--border);background:var(--surface); }
+    .nav-links a.active { color:#c4b5fd;border-color:rgba(130,110,240,.3);background:rgba(130,110,240,.1); }
+    .admin-nav-btn {
+      font-size:11px;font-weight:700;letter-spacing:.04em;
+      padding:6px 14px;border-radius:10px;border:1px solid rgba(248,113,113,.3);
+      background:rgba(248,113,113,.08);color:#f87171;cursor:pointer;
+      transition:all .2s;font-family:'Sora',sans-serif;
+    }
+    .admin-nav-btn:hover { background:rgba(248,113,113,.15);border-color:rgba(248,113,113,.5); }
+
+    /* ── HERO ── */
+    .hero { text-align:center;margin-bottom:52px;animation:up .7s .1s ease both; }
+    .hero h1 {
+      font-size:clamp(26px,5.5vw,48px);font-weight:800;
+      letter-spacing:-.03em;line-height:1.15;color:#fff;margin-bottom:14px;
+    }
+    .hero h1 span { background:linear-gradient(120deg,#a78bfa,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+    .hero p { font-size:14px;color:var(--muted);max-width:420px;margin:0 auto 22px;line-height:1.7; }
+    .hero-pills { display:flex;justify-content:center;gap:10px;flex-wrap:wrap; }
+    .pill { font-size:11px;font-weight:600;padding:5px 13px;border-radius:20px;background:var(--surface);border:1px solid var(--border);color:var(--muted);backdrop-filter:blur(8px); }
+
+    /* ── SECTION LABEL ── */
+    .sec-label { font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;text-align:center; }
+
+    /* ── CARDS ── */
+    .grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px;margin-bottom:50px; }
+
+    .card {
+      background:var(--surface);border:1px solid var(--border);
+      backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+      border-radius:22px;overflow:hidden;
+      transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s,border-color .25s;
+      animation:up .6s ease both;
+    }
+    .card:hover { transform:translateY(-5px); }
+    .c-green:hover  { box-shadow:0 16px 48px rgba(34,197,94,.13);border-color:rgba(34,197,94,.25); }
+    .c-blue:hover   { box-shadow:0 16px 48px rgba(99,102,241,.16);border-color:rgba(99,102,241,.3); }
+    .c-purple:hover { box-shadow:0 16px 48px rgba(167,139,250,.16);border-color:rgba(167,139,250,.3); }
+    .c-red:hover    { box-shadow:0 16px 48px rgba(248,113,113,.13);border-color:rgba(248,113,113,.25); }
+    .c-orange:hover { box-shadow:0 16px 48px rgba(251,146,60,.13);border-color:rgba(251,146,60,.25); }
+
+    .stripe { height:3px; }
+    .c-green  .stripe { background:linear-gradient(90deg,#16a34a,#4ade80); }
+    .c-blue   .stripe { background:linear-gradient(90deg,#4338ca,#818cf8); }
+    .c-purple .stripe { background:linear-gradient(90deg,#7c3aed,#c4b5fd); }
+    .c-red    .stripe { background:linear-gradient(90deg,#dc2626,#fca5a5); }
+    .c-orange .stripe { background:linear-gradient(90deg,#c2410c,#fb923c); }
+
+    .c-body { padding:22px 20px 24px; }
+
+    .c-tag { font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;display:inline-block; }
+    .c-green  .c-tag { color:#4ade80; }
+    .c-blue   .c-tag { color:#818cf8; }
+    .c-purple .c-tag { color:#c4b5fd; }
+    .c-red    .c-tag { color:#fca5a5; }
+    .c-orange .c-tag { color:#fb923c; }
+
+    .c-title { font-size:17px;font-weight:700;color:#fff;margin-bottom:6px;line-height:1.25; }
+
+    .c-price { display:flex;align-items:baseline;gap:5px;margin-bottom:4px; }
+    .c-price-main { font-size:24px;font-weight:800;color:#fff; }
+    .c-price-sub  { font-size:12px;color:var(--muted); }
+
+    .c-duration { font-size:11px;color:var(--muted);margin-bottom:18px;display:flex;align-items:center;gap:5px; }
+    .c-duration::before { content:'';width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0; }
+
+    .c-divider { height:1px;background:rgba(255,255,255,.06);margin-bottom:16px; }
+
+    .toggle-btn {
+      display:flex;align-items:center;justify-content:space-between;
+      width:100%;background:none;border:none;padding:0;
+      font-family:'Sora',sans-serif;font-size:10px;font-weight:700;
+      letter-spacing:.08em;text-transform:uppercase;
+      color:var(--muted);cursor:pointer;margin-bottom:10px;transition:color .2s;
+    }
+    .toggle-btn:hover { color:var(--text); }
+    .toggle-btn .arr { font-size:10px;transition:transform .3s; }
+    .toggle-btn.open .arr { transform:rotate(180deg); }
+
+    .collapsible { overflow:hidden;max-height:0;transition:max-height .38s cubic-bezier(.16,1,.3,1); }
+    .collapsible.open { max-height:900px; }
+
+    ul.items { list-style:none;margin-bottom:14px; }
+    ul.items li { display:flex;align-items:flex-start;gap:8px;font-size:12px;color:rgba(210,205,255,.75);padding:4.5px 0;border-bottom:1px solid rgba(255,255,255,.035);line-height:1.45; }
+    ul.items li:last-child { border-bottom:none; }
+
+    .dot-check { width:15px;height:15px;border-radius:50%;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:8px; }
+    .c-green  .dot-check { background:rgba(74,222,128,.15);color:#4ade80; }
+    .c-blue   .dot-check { background:rgba(129,140,248,.15);color:#818cf8; }
+    .c-purple .dot-check { background:rgba(196,181,253,.15);color:#c4b5fd; }
+    .c-red    .dot-check { background:rgba(252,165,165,.15);color:#fca5a5; }
+    .c-orange .dot-check { background:rgba(251,146,60,.15);color:#fb923c; }
+
+    ul.advs { list-style:none;margin-bottom:18px; }
+    ul.advs li { font-size:12px;color:rgba(210,205,255,.7);padding:3.5px 0;padding-left:14px;position:relative;line-height:1.45; }
+    ul.advs li::before { content:'–';position:absolute;left:0;color:var(--muted); }
+
+    .enrol-btn {
+      display:block;width:100%;padding:11px;border:none;border-radius:12px;
+      font-family:'Sora',sans-serif;font-size:13px;font-weight:700;
+      cursor:pointer;text-align:center;text-decoration:none;color:#fff;
+      transition:opacity .2s,transform .15s;
+    }
+    .enrol-btn:hover { opacity:.85;transform:scale(.98); }
+    .c-green  .enrol-btn { background:linear-gradient(135deg,#16a34a,#22c55e); }
+    .c-blue   .enrol-btn { background:linear-gradient(135deg,#4338ca,#6366f1); }
+    .c-purple .enrol-btn { background:linear-gradient(135deg,#7c3aed,#a78bfa); }
+    .c-red    .enrol-btn { background:linear-gradient(135deg,#dc2626,#f87171); }
+    .c-orange .enrol-btn { background:linear-gradient(135deg,#c2410c,#f97316); }
+
+    .badge { position:absolute;top:14px;right:14px;font-size:9px;font-weight:700;letter-spacing:.07em;padding:3px 9px;border-radius:20px;background:rgba(167,139,250,.18);border:1px solid rgba(167,139,250,.35);color:#c4b5fd; }
+
+    .card:nth-child(1){animation-delay:.08s}
+    .card:nth-child(2){animation-delay:.15s}
+    .card:nth-child(3){animation-delay:.22s}
+    .card:nth-child(4){animation-delay:.29s}
+    .card:nth-child(5){animation-delay:.36s}
+
+    /* ── COMPARE ── */
+    .compare-wrap {
+      background:var(--surface);border:1px solid var(--border);
+      backdrop-filter:blur(18px);border-radius:22px;overflow:hidden;
+      margin-bottom:50px;animation:up .7s .5s ease both;
+    }
+    .cmp-head { display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;padding:12px 20px;background:rgba(100,80,220,.14);border-bottom:1px solid rgba(130,110,240,.2); }
+    .cmp-head span { font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#a78bfa;text-align:center; }
+    .cmp-head span:first-child { text-align:left; }
+    .cmp-row { display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;padding:10px 20px;border-bottom:1px solid rgba(255,255,255,.04);transition:background .2s; }
+    .cmp-row:last-child { border-bottom:none; }
+    .cmp-row:hover { background:rgba(100,80,220,.06); }
+    .cmp-row span { font-size:11px;color:var(--muted);text-align:center;display:flex;align-items:center;justify-content:center; }
+    .cmp-row span:first-child { color:var(--text);font-size:12px;font-weight:500;justify-content:flex-start; }
+    .yes { color:#4ade80;font-size:13px; }
+    .no  { color:rgba(255,255,255,.15);font-size:13px; }
+
+    /* ── FOOTER ── */
+    footer { background:var(--surface);border:1px solid var(--border);backdrop-filter:blur(18px);border-radius:20px;padding:22px 26px;animation:up .7s .55s ease both; }
+    .footer-links { display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:280px;margin:0 auto 16px; }
+    .footer-links a { text-align:center;text-decoration:none;font-size:13px;font-weight:600;color:var(--muted);padding:10px;border-radius:12px;border:1px solid var(--border);background:var(--surface);transition:all .2s; }
+    .footer-links a:hover { color:var(--text);border-color:rgba(130,110,240,.35);background:rgba(100,80,220,.1); }
+    .footer-copy { text-align:center;font-size:11px;color:var(--muted);padding-top:14px;border-top:1px solid rgba(255,255,255,.05); }
+
+    /* ════════════════════════════════
+       ADMIN MODAL OVERLAY
+    ════════════════════════════════ */
+    .overlay {
+      position:fixed;inset:0;z-index:1000;
+      background:rgba(8,7,20,0.92);
+      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+      display:none;align-items:flex-start;justify-content:center;
+      padding:20px 12px 40px;overflow-y:auto;
+    }
+    .overlay.show { display:flex; }
+
+    /* Login panel */
+    .login-panel {
+      background:rgba(20,16,50,0.95);
+      border:1px solid rgba(130,110,240,.3);
+      border-radius:22px;padding:36px 32px;width:100%;max-width:380px;
+      margin:auto;
+      box-shadow:0 24px 60px rgba(0,0,0,.6);
+      animation:up .4s cubic-bezier(.16,1,.3,1) both;
+    }
+    .login-panel h2 { font-size:20px;font-weight:800;color:#fff;margin-bottom:6px; }
+    .login-panel p  { font-size:12px;color:var(--muted);margin-bottom:28px; }
+
+    .field-group { margin-bottom:16px; }
+    .field-group label { display:block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:7px; }
+    .field-group input, .field-group select, .field-group textarea {
+      width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+      border-radius:11px;padding:10px 14px;
+      font-family:'Sora',sans-serif;font-size:13px;color:var(--text);outline:none;
+      transition:border-color .2s,background .2s;
+    }
+    .field-group input:focus, .field-group select:focus, .field-group textarea:focus {
+      border-color:rgba(130,110,240,.5);background:rgba(100,80,220,.08);
+    }
+    .field-group input::placeholder { color:var(--muted); }
+    .field-group select option { background:#120f2a; }
+    .field-group textarea { resize:vertical;min-height:70px; }
+
+    .login-err { font-size:12px;color:#f87171;margin-bottom:14px;display:none; }
+
+    .btn-primary {
+      width:100%;padding:12px;border:none;border-radius:12px;
+      font-family:'Sora',sans-serif;font-size:13px;font-weight:700;
+      background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;cursor:pointer;
+      transition:opacity .2s,transform .15s;
+    }
+    .btn-primary:hover { opacity:.88;transform:scale(.99); }
+
+    /* Admin panel */
+    .admin-panel {
+      width:100%;max-width:880px;margin:0 auto;
+      animation:up .4s cubic-bezier(.16,1,.3,1) both;
+    }
+
+    .ap-header {
+      display:flex;align-items:center;justify-content:space-between;
+      margin-bottom:22px;flex-wrap:wrap;gap:12px;
+    }
+    .ap-header h2 { font-size:20px;font-weight:800;color:#fff; }
+    .ap-header-right { display:flex;gap:10px;align-items:center; }
+
+    .btn-sm {
+      font-family:'Sora',sans-serif;font-size:12px;font-weight:600;
+      padding:8px 16px;border-radius:10px;border:none;cursor:pointer;transition:all .2s;
+    }
+    .btn-logout  { background:rgba(248,113,113,.12);color:#f87171;border:1px solid rgba(248,113,113,.25); }
+    .btn-logout:hover  { background:rgba(248,113,113,.22); }
+    .btn-add    { background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff; }
+    .btn-add:hover { opacity:.88; }
+
+    /* stats */
+    .ap-stats { display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px; }
+    .ap-stat {
+      background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+      border-radius:16px;padding:14px 16px;text-align:center;
+    }
+    .ap-stat-num { font-size:22px;font-weight:800;color:#fff; }
+    .ap-stat-label { font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-top:2px; }
+
+    /* search/filter row */
+    .ap-filter { display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px; }
+    .ap-search { position:relative;flex:2;min-width:160px; }
+    .ap-search svg { position:absolute;left:10px;top:50%;transform:translateY(-50%);width:13px;height:13px;fill:var(--muted);pointer-events:none; }
+    .ap-search input {
+      width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);
+      border-radius:10px;padding:9px 12px 9px 30px;
+      font-family:'Sora',sans-serif;font-size:12px;color:var(--text);outline:none;
+      transition:border-color .2s;
+    }
+    .ap-search input::placeholder { color:var(--muted); }
+    .ap-search input:focus { border-color:rgba(130,110,240,.4); }
+    .ap-sel { position:relative;flex:1;min-width:120px; }
+    .ap-sel::after { content:'▾';position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--accent);font-size:10px;pointer-events:none; }
+    .ap-sel select {
+      width:100%;appearance:none;-webkit-appearance:none;
+      background:rgba(255,255,255,.04);border:1px solid var(--border);
+      border-radius:10px;padding:9px 28px 9px 12px;
+      font-family:'Sora',sans-serif;font-size:12px;color:var(--text);cursor:pointer;outline:none;
+      transition:border-color .2s;
+    }
+    .ap-sel select:focus { border-color:rgba(130,110,240,.4); }
+    .ap-sel select option { background:#120f2a; }
+
+    /* student table */
+    .st-table {
+      background:rgba(255,255,255,.03);border:1px solid var(--border);
+      border-radius:18px;overflow:hidden;
+    }
+    .st-head {
+      display:grid;grid-template-columns:2fr 1.3fr 1.4fr 1.1fr 0.7fr 1.2fr;
+      padding:11px 18px;background:rgba(100,80,220,.14);
+      border-bottom:1px solid rgba(130,110,240,.2);
+    }
+    .st-head span { font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent); }
+
+    .st-row {
+      display:grid;grid-template-columns:2fr 1.3fr 1.4fr 1.1fr 0.7fr 1.2fr;
+      padding:11px 18px;border-bottom:1px solid rgba(255,255,255,.04);
+      align-items:center;transition:background .2s;
+    }
+    .st-row:last-child { border-bottom:none; }
+    .st-row:hover { background:rgba(100,80,220,.06); }
+    .st-row span { font-size:12px;color:var(--muted);display:flex;align-items:center; }
+    .st-row span.sname { font-weight:600;color:var(--text);gap:6px; }
+    .st-row span.sname::before { content:'';width:5px;height:5px;border-radius:50%;background:#7c6fcd;flex-shrink:0; }
+
+    .course-tag { font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--accent-dim);border:1px solid rgba(167,139,250,.25);color:var(--accent);white-space:nowrap; }
+    .status-tag { font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px;cursor:pointer;white-space:nowrap;border:none;font-family:'Sora',sans-serif;transition:all .2s; }
+    .status-tag.active   { background:rgba(74,222,128,.14);color:#4ade80;border:1px solid rgba(74,222,128,.25); }
+    .status-tag.inactive { background:rgba(248,113,113,.12);color:#f87171;border:1px solid rgba(248,113,113,.22); }
+    .status-tag:hover { opacity:.75; }
+
+    .act-btns { display:flex;gap:6px; }
+    .act-btn {
+      font-size:10px;font-weight:600;padding:4px 9px;border-radius:8px;
+      border:none;cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s;
+    }
+    .btn-edit   { background:rgba(96,165,250,.12);color:#60a5fa;border:1px solid rgba(96,165,250,.22); }
+    .btn-edit:hover { background:rgba(96,165,250,.22); }
+    .btn-del    { background:rgba(248,113,113,.1);color:#f87171;border:1px solid rgba(248,113,113,.2); }
+    .btn-del:hover  { background:rgba(248,113,113,.22); }
+
+    .st-empty { text-align:center;padding:32px;color:var(--muted);font-size:13px; }
+
+    /* ADD / EDIT modal */
+    .modal-wrap {
+      position:fixed;inset:0;z-index:2000;
+      background:rgba(8,7,20,0.88);backdrop-filter:blur(10px);
+      display:none;align-items:center;justify-content:center;padding:20px;
+    }
+    .modal-wrap.show { display:flex; }
+    .modal {
+      background:rgba(20,16,50,0.97);border:1px solid rgba(130,110,240,.3);
+      border-radius:22px;padding:30px 28px;width:100%;max-width:440px;
+      box-shadow:0 24px 60px rgba(0,0,0,.6);
+      animation:up .35s cubic-bezier(.16,1,.3,1) both;
+    }
+    .modal-header { display:flex;justify-content:space-between;align-items:center;margin-bottom:22px; }
+    .modal-header h3 { font-size:17px;font-weight:700;color:#fff; }
+    .modal-close { background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;line-height:1;padding:2px 6px;border-radius:6px;transition:color .2s; }
+    .modal-close:hover { color:#fff; }
+    .modal-footer { display:flex;gap:10px;margin-top:22px; }
+    .modal-footer .btn-primary { flex:1; }
+    .btn-cancel { flex:1;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-family:'Sora',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s; }
+    .btn-cancel:hover { color:var(--text);background:rgba(255,255,255,.08); }
+
+    /* confirm delete */
+    .confirm-wrap {
+      position:fixed;inset:0;z-index:3000;
+      background:rgba(8,7,20,.9);backdrop-filter:blur(8px);
+      display:none;align-items:center;justify-content:center;padding:20px;
+    }
+    .confirm-wrap.show { display:flex; }
+    .confirm-box { background:rgba(20,16,50,.97);border:1px solid rgba(248,113,113,.3);border-radius:18px;padding:28px 24px;max-width:340px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.6);animation:up .3s ease both; }
+    .confirm-box h3 { font-size:16px;font-weight:700;color:#fff;margin-bottom:8px; }
+    .confirm-box p  { font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.5; }
+    .confirm-btns { display:flex;gap:10px; }
+    .confirm-btns button { flex:1;padding:11px;border-radius:11px;font-family:'Sora',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;border:none; }
+    .btn-confirm-no  { background:var(--surface);border:1px solid var(--border);color:var(--muted); }
+    .btn-confirm-no:hover { color:var(--text); }
+    .btn-confirm-yes { background:linear-gradient(135deg,#dc2626,#f87171);color:#fff; }
+    .btn-confirm-yes:hover { opacity:.88; }
+
+    /* toast */
+    .toast {
+      position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
+      background:rgba(30,24,70,.97);border:1px solid rgba(130,110,240,.3);
+      border-radius:12px;padding:10px 20px;font-size:13px;font-weight:600;color:var(--text);
+      z-index:4000;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;
+      white-space:nowrap;
+    }
+    .toast.show { opacity:1;transform:translateX(-50%) translateY(0); }
+
+    @keyframes down { from{opacity:0;transform:translateY(-18px);}to{opacity:1;transform:translateY(0);} }
+    @keyframes up   { from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);} }
+
+    @media(max-width:600px){
+      .ap-stats { grid-template-columns:repeat(2,1fr); }
+      .st-head,.st-row { grid-template-columns:2fr 1fr 1fr 1fr; }
+      .st-head span:nth-child(3),.st-row span:nth-child(3){ display:none; }
+      .cmp-head,.cmp-row { grid-template-columns:2fr 1fr 1fr 1fr; }
+      .cmp-head span:nth-child(5),.cmp-row span:nth-child(5),
+      .cmp-head span:nth-child(6),.cmp-row span:nth-child(6){ display:none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div id="pts"></div>
+
+<div class="wrap">
+
+  <!-- NAV -->
+  <nav>
+    <span class="logo">NVW²</span>
+    <div class="nav-links">
+      <a href="#courses" class="active">Courses</a>
+      <a href="#students">Students</a>
+      <button class="admin-nav-btn" onclick="openLogin()">Admin</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Learn Web Dev &<br><span>Security</span> the right way.</h1>
+    <p>Structured courses built for beginners and developers in Nigeria. Pay once, learn properly.</p>
+    <div class="hero-pills">
+      <span class="pill">6–8 hrs / week</span>
+      <span class="pill">5 tracks available</span>
+      <span class="pill">Beginner friendly</span>
+    </div>
+  </div>
+
+  <!-- ── COURSES ── -->
+  <div class="sec-label" id="courses">Available Courses</div>
+  <div class="grid">
+
+    <!-- T1 -->
+    <div class="card c-green">
+      <div class="stripe"></div>
+      <div class="c-body">
+        <div class="c-tag">Tier 1 · Beginner</div>
+        <div class="c-title">Complete HTML & CSS</div>
+        <div class="c-price"><span class="c-price-main">₦3,500</span><span class="c-price-sub">/ 3 months</span></div>
+        <div class="c-duration">3 months · 6–8 hrs/week</div>
+        <div class="c-divider"></div>
+        <button class="toggle-btn open" onclick="tog(this)"><span>Curriculum</span><span class="arr">▾</span></button>
+        <div class="collapsible open">
+          <ul class="items">
+            <li><span class="dot-check">✓</span>HTML5 structure, semantic elements & forms</li>
+            <li><span class="dot-check">✓</span>CSS3 — colours, typography, spacing, box model</li>
+            <li><span class="dot-check">✓</span>Flexbox & CSS Grid layout</li>
+            <li><span class="dot-check">✓</span>Responsive design & media queries</li>
+            <li><span class="dot-check">✓</span>CSS transitions & keyframe animations</li>
+            <li><span class="dot-check">✓</span>Build & publish a complete website</li>
+          </ul>
+        </div>
+        <button class="toggle-btn" onclick="tog(this)"><span>Advantages</span><span class="arr">▾</span></button>
+        <div class="collapsible">
+          <ul class="advs">
+            <li>Build any website layout without relying on templates</li>
+            <li>Write clean, readable HTML and CSS from scratch</li>
+            <li>Solid foundation for every advanced track</li>
+            <li>Deploy your first live website on the internet</li>
+          </ul>
+        </div>
+        <a href="https://wa.me/2347068923676?text=Hi%2C+I+want+to+enrol+for+Complete+HTML+%26+CSS+%E2%82%A63%2C500" class="enrol-btn">Enrol on WhatsApp</a>
+      </div>
+    </div>
+
+    <!-- T2 -->
+    <div class="card c-blue">
+      <div class="stripe"></div>
+      <div class="c-body">
+        <div class="c-tag">Tier 2 · Intermediate</div>
+        <div class="c-title">HTML, CSS & JavaScript</div>
+        <div class="c-price"><span class="c-price-main">₦7,000</span><span class="c-price-sub">/ 5 months</span></div>
+        <div class="c-duration">5 months · 6–8 hrs/week</div>
+        <div class="c-divider"></div>
+        <button class="toggle-btn open" onclick="tog(this)"><span>Curriculum</span><span class="arr">▾</span></button>
+        <div class="collapsible open">
+          <ul class="items">
+            <li><span class="dot-check">✓</span>Everything in Tier 1</li>
+            <li><span class="dot-check">✓</span>JavaScript fundamentals & DOM manipulation</li>
+            <li><span class="dot-check">✓</span>ES6+ — arrow functions, destructuring, modules</li>
+            <li><span class="dot-check">✓</span>Async JS — promises, async/await, Fetch API</li>
+            <li><span class="dot-check">✓</span>Form validation, events & localStorage</li>
+            <li><span class="dot-check">✓</span>GSAP animations & scroll effects</li>
+            <li><span class="dot-check">✓</span>Introduction to React basics</li>
+          </ul>
+        </div>
+        <button class="toggle-btn" onclick="tog(this)"><span>Advantages</span><span class="arr">▾</span></button>
+        <div class="collapsible">
+          <ul class="advs">
+            <li>Make your websites interactive and dynamic</li>
+            <li>Connect to live APIs and display real data</li>
+            <li>Build smooth, professional animations with GSAP</li>
+            <li>Understand how modern websites actually function</li>
+          </ul>
+        </div>
+        <a href="https://wa.me/2347068923676?text=Hi%2C+I+want+to+enrol+for+HTML%2C+CSS+%26+JavaScript+%E2%82%A67%2C000" class="enrol-btn">Enrol on WhatsApp</a>
+      </div>
+    </div>
+
+    <!-- T3 -->
+    <div class="card c-purple" style="position:relative">
+      <div class="stripe"></div>
+      <span class="badge">Most Popular</span>
+      <div class="c-body">
+        <div class="c-tag">Tier 3 · Advanced</div>
+        <div class="c-title">Full Frontend Developer</div>
+        <div class="c-price"><span class="c-price-main">₦10,000</span><span class="c-price-sub">/ 7 months</span></div>
+        <div class="c-duration">7 months · 6–8 hrs/week</div>
+        <div class="c-divider"></div>
+        <button class="toggle-btn open" onclick="tog(this)"><span>Curriculum</span><span class="arr">▾</span></button>
+        <div class="collapsible open">
+          <ul class="items">
+            <li><span class="dot-check">✓</span>Everything in Tier 1 & 2</li>
+            <li><span class="dot-check">✓</span>React.js — components, hooks, state & routing</li>
+            <li><span class="dot-check">✓</span>Advanced GSAP & scroll-driven animations</li>
+            <li><span class="dot-check">✓</span>Git & GitHub — version control workflow</li>
+            <li><span class="dot-check">✓</span>Performance optimisation & SEO basics</li>
+            <li><span class="dot-check">✓</span>Deploy with Vercel, Netlify & GitHub Pages</li>
+            <li><span class="dot-check">✓</span>Portfolio building & freelancing basics</li>
+          </ul>
+        </div>
+        <button class="toggle-btn" onclick="tog(this)"><span>Advantages</span><span class="arr">▾</span></button>
+        <div class="collapsible">
+          <ul class="advs">
+            <li>Build, optimise and deploy real websites independently</li>
+            <li>Work with React — the most in-demand frontend tool</li>
+            <li>Collaborate using proper Git workflow</li>
+            <li>Build a portfolio that stands out</li>
+          </ul>
+        </div>
+        <a href="https://wa.me/2347068923676?text=Hi%2C+I+want+to+enrol+for+Full+Frontend+Developer+%E2%82%A610%2C000" class="enrol-btn">Enrol on WhatsApp</a>
+      </div>
+    </div>
+
+    <!-- T4 -->
+    <div class="card c-red">
+      <div class="stripe"></div>
+      <div class="c-body">
+        <div class="c-tag">Tier 4 · Expert</div>
+        <div class="c-title">Full Stack Development</div>
+        <div class="c-price"><span class="c-price-main">₦500</span><span class="c-price-sub">/ week instalment</span></div>
+        <div class="c-duration">Extended · 6–8 hrs/week</div>
+        <div class="c-divider"></div>
+        <button class="toggle-btn open" onclick="tog(this)"><span>Curriculum</span><span class="arr">▾</span></button>
+        <div class="collapsible open">
+          <ul class="items">
+            <li><span class="dot-check">✓</span>Everything in Tier 1, 2 & 3</li>
+            <li><span class="dot-check">✓</span>Python for backend — Flask & Django</li>
+            <li><span class="dot-check">✓</span>SQL — MySQL & PostgreSQL, queries & relations</li>
+            <li><span class="dot-check">✓</span>REST API design, build & integration</li>
+            <li><span class="dot-check">✓</span>User auth — JWT, sessions & OAuth</li>
+            <li><span class="dot-check">✓</span>Server deployment — Linux, Nginx, cloud</li>
+            <li><span class="dot-check">✓</span>Docker basics & environment management</li>
+          </ul>
+        </div>
+        <button class="toggle-btn" onclick="tog(this)"><span>Advantages</span><span class="arr">▾</span></button>
+        <div class="collapsible">
+          <ul class="advs">
+            <li>Build complete, production-ready web applications</li>
+            <li>Own both the frontend and backend of any project</li>
+            <li>Implement real authentication and database systems</li>
+            <li>Affordable weekly payment — no large upfront cost</li>
+          </ul>
+        </div>
+        <a href="https://wa.me/2347068923676?text=Hi%2C+I+want+to+enrol+for+Full+Stack+Development+%E2%82%A6500+weekly" class="enrol-btn">Enrol on WhatsApp</a>
+      </div>
+    </div>
+
+    <!-- T5 -->
+    <div class="card c-orange">
+      <div class="stripe"></div>
+      <div class="c-body">
+        <div class="c-tag">Tier 5 · Expert + Security</div>
+        <div class="c-title">Website Security + Full Stack</div>
+        <div class="c-price"><span class="c-price-main">₦500</span><span class="c-price-sub">/ week instalment</span></div>
+        <div class="c-duration">Extended · 6–8 hrs/week</div>
+        <div class="c-divider"></div>
+        <button class="toggle-btn open" onclick="tog(this)"><span>Curriculum</span><span class="arr">▾</span></button>
+        <div class="collapsible open">
+          <ul class="items">
+            <li><span class="dot-check">✓</span>Everything in Tier 4</li>
+            <li><span class="dot-check">✓</span>OWASP Top 10 — XSS, SQLi, CSRF, IDOR</li>
+            <li><span class="dot-check">✓</span>Penetration testing with Burp Suite & tools</li>
+            <li><span class="dot-check">✓</span>HTTPS, TLS, CORS & secure HTTP headers</li>
+            <li><span class="dot-check">✓</span>Password hashing, input sanitisation & secure coding</li>
+            <li><span class="dot-check">✓</span>Security auditing & vulnerability reporting</li>
+            <li><span class="dot-check">✓</span>API security — rate limiting, token expiry, RBAC</li>
+            <li><span class="dot-check">✓</span>Intro to bug bounty hunting methodology</li>
+          </ul>
+        </div>
+        <button class="toggle-btn" onclick="tog(this)"><span>Advantages</span><span class="arr">▾</span></button>
+        <div class="collapsible">
+          <ul class="advs">
+            <li>Build and secure full-stack applications end-to-end</li>
+            <li>Understand and defend against real-world attacks</li>
+            <li>Conduct basic penetration tests and security audits</li>
+            <li>Entry point into bug bounty and security research</li>
+          </ul>
+        </div>
+        <a href="https://wa.me/2347068923676?text=Hi%2C+I+want+to+enrol+for+Website+Security+%2B+Full+Stack+%E2%82%A6500+weekly" class="enrol-btn">Enrol on WhatsApp</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COMPARE -->
+  <div class="sec-label">Course Comparison</div>
+  <div class="compare-wrap">
+    <div class="cmp-head"><span>Feature</span><span>T1</span><span>T2</span><span>T3</span><span>T4</span><span>T5</span></div>
+    <div class="cmp-row"><span>HTML & CSS</span><span class="yes">✓</span><span class="yes">✓</span><span class="yes">✓</span><span class="yes">✓</span><span class="yes">✓</span></div>
+    <div class="cmp-row"><span>JavaScript</span><span class="no">—</span><span class="yes">✓</span><span class="yes">✓</span><span class="yes">✓</span><span class="yes">✓</span></div>
+    <div class="cmp-row"><span>GSAP Animations</span><span class="no">—</span><span class="yes">✓</span><span class="yes">✓</span><span class="yes">✓</span><span class="yes">✓</span></div>
+    <div class="cmp-row"><span>React.js</span><span class="no">—</span><span class="no">—</span><span class="yes">✓</span><span class="yes">✓</span><span class="yes">✓</span></div>
+    <div class="cmp-row"><span>Git & Deployment</span><span class="no">—</span><span class="no">—</span><span class="yes">✓</span><span class="yes">✓</span><span class="yes">✓</span></div>
+    <div class="cmp-row"><span>Python & SQL Backend</span><span class="no">—</span><span class="no">—</span><span class="no">—</span><span class="yes">✓</span><span class="yes">✓</span></div>
+    <div class="cmp-row"><span>Website Security</span><span class="no">—</span><span class="no">—</span><span class="no">—</span><span class="no">—</span><span class="yes">✓</span></div>
+    <div class="cmp-row"><span>Penetration Testing</span><span class="no">—</span><span class="no">—</span><span class="no">—</span><span class="no">—</span><span class="yes">✓</span></div>
+  </div>
+
+
+  <!-- PUBLIC STUDENTS -->
+  <div class="sec-label" id="students">Recognized Students</div>
+  <div style="background:var(--surface);border:1px solid var(--border);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:22px;overflow:hidden;margin-bottom:50px;animation:up .7s .52s ease both;">
+    <div style="padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;gap:10px;flex-wrap:wrap;">
+      <div class="ap-search" style="flex:2;min-width:160px;">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" id="pub-srch" placeholder="Search by name…">
+      </div>
+      <div class="ap-sel" style="flex:1;min-width:120px;">
+        <select id="pub-course">
+          <option value="">All Courses</option>
+          <option>HTML &amp; CSS</option>
+          <option>HTML/CSS/JS</option>
+          <option>Frontend</option>
+          <option>Full Stack</option>
+          <option>Security</option>
+        </select>
+      </div>
+      <div class="ap-sel" style="flex:1;min-width:110px;">
+        <select id="pub-status">
+          <option value="">All Status</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:2fr 1.5fr 1fr;padding:11px 20px;background:rgba(100,80,220,.14);border-bottom:1px solid rgba(130,110,240,.2);">
+      <span style="font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#a78bfa;">Name</span>
+      <span style="font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#a78bfa;">Course</span>
+      <span style="font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#a78bfa;">Status</span>
+    </div>
+    <div id="pubTbody"></div>
+    <div id="pubNoRes" style="text-align:center;padding:28px;color:rgba(180,170,230,0.5);font-size:13px;display:none;">No students match.</div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="tel:+2347068923676">Phone</a>
+      <a href="https://wa.me/2347068923676">WhatsApp</a>
+    </div>
+    <div class="footer-copy">NVW² &copy; 2026 · Website Development & Security</div>
+  </footer>
+
+</div><!-- /wrap -->
+
+
+<!-- ══════════════════════════════════
+     ADMIN LOGIN OVERLAY
+══════════════════════════════════ -->
+<div class="overlay" id="loginOverlay">
+  <div class="login-panel">
+    <h2>Admin Access</h2>
+    <p>Enter your credentials to manage students.</p>
+    <div class="field-group">
+      <label>Username</label>
+      <input type="text" id="loginUser" placeholder="admin" autocomplete="off">
+    </div>
+    <div class="field-group">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="login-err" id="loginErr">Incorrect username or password.</div>
+    <button class="btn-primary" onclick="doLogin()">Login</button>
+    <button class="btn-cancel" style="width:100%;margin-top:10px;padding:11px;border-radius:12px;" onclick="closeLogin()">Cancel</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ADMIN PANEL OVERLAY
+══════════════════════════════════ -->
+<div class="overlay" id="adminOverlay">
+  <div class="admin-panel">
+
+    <div class="ap-header">
+      <div>
+        <h2>Student Management</h2>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px;">NVW² Admin Panel</div>
+      </div>
+      <div class="ap-header-right">
+        <button class="btn-sm btn-add" onclick="openAdd()">+ Add Student</button>
+        <button class="btn-sm btn-logout" onclick="doLogout()">Logout</button>
+      </div>
+    </div>
+
+    <!-- stats -->
+    <div class="ap-stats">
+      <div class="ap-stat"><div class="ap-stat-num" id="st-total">0</div><div class="ap-stat-label">Total</div></div>
+      <div class="ap-stat"><div class="ap-stat-num" id="st-active">0</div><div class="ap-stat-label">Active</div></div>
+      <div class="ap-stat"><div class="ap-stat-num" id="st-inactive">0</div><div class="ap-stat-label">Inactive</div></div>
+      <div class="ap-stat"><div class="ap-stat-num" id="st-courses">0</div><div class="ap-stat-label">Courses</div></div>
+    </div>
+
+    <!-- filter -->
+    <div class="ap-filter">
+      <div class="ap-search">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" id="ap-srch" placeholder="Search by name, phone, address…">
+      </div>
+      <div class="ap-sel"><select id="ap-course"><option value="">All Courses</option><option>HTML & CSS</option><option>HTML/CSS/JS</option><option>Frontend</option><option>Full Stack</option><option>Security</option></select></div>
+      <div class="ap-sel"><select id="ap-status"><option value="">All Status</option><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
+    </div>
+
+    <!-- table -->
+    <div class="st-table">
+      <div class="st-head">
+        <span>Name</span>
+        <span>Phone</span>
+        <span>Address</span>
+        <span>Course</span>
+        <span>Status</span>
+        <span>Actions</span>
+      </div>
+      <div id="adminTbody"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ADD / EDIT STUDENT MODAL
+══════════════════════════════════ -->
+<div class="modal-wrap" id="studentModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Add Student</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <input type="hidden" id="editId">
+    <div class="field-group"><label>Full Name</label><input type="text" id="f-name" placeholder="e.g. Adebayo Nicevibes"></div>
+    <div class="field-group"><label>Phone Number</label><input type="text" id="f-phone" placeholder="+234 800 000 0000"></div>
+    <div class="field-group"><label>Address</label><input type="text" id="f-address" placeholder="City, State"></div>
+    <div class="field-group">
+      <label>Course</label>
+      <select id="f-course">
+        <option value="HTML & CSS">HTML & CSS</option>
+        <option value="HTML/CSS/JS">HTML/CSS/JS</option>
+        <option value="Frontend">Frontend</option>
+        <option value="Full Stack">Full Stack</option>
+        <option value="Security">Security</option>
+      </select>
+    </div>
+    <div class="field-group">
+      <label>Status</label>
+      <select id="f-status">
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+    </div>
+    <div class="field-group"><label>Enrolled Date</label><input type="text" id="f-enrolled" placeholder="e.g. Jan 2026"></div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveStudent()">Save Student</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM -->
+<div class="confirm-wrap" id="confirmWrap">
+  <div class="confirm-box">
+    <h3>Remove Student?</h3>
+    <p id="confirmMsg">This will permanently remove the student from the list.</p>
+    <div class="confirm-btns">
+      <button class="btn-confirm-no" onclick="closeConfirm()">Cancel</button>
+      <button class="btn-confirm-yes" onclick="confirmDelete()">Remove</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CREDENTIALS (change these to your own) ──
+const ADMIN_USER = 'Nicevibes01';
+const ADMIN_PASS = 'NVW123456';
+
+// ── INITIAL DATA ──
+let students = [
+  { id:1, name:'Adebayo Nicevibes', phone:'+234 801 234 5678', address:'Ile-Ife, Osun',  course:'HTML & CSS', status:'active',   enrolled:'Jan 2026' },
+  { id:2, name:'Fatima Abubakar',   phone:'+234 802 345 6789', address:'Abuja, FCT',     course:'Security',   status:'active',   enrolled:'Jan 2026' },
+  { id:3, name:'Chidi Okonkwo',     phone:'+234 803 456 7890', address:'Lagos Island',   course:'Frontend',   status:'inactive', enrolled:'Feb 2026' },
+  { id:4, name:'Amara Osei',        phone:'+234 804 567 8901', address:'Ibadan, Oyo',    course:'Full Stack', status:'active',   enrolled:'Jan 2026' },
+  { id:5, name:'Tolu Adeleke',      phone:'+234 805 678 9012', address:'Enugu State',    course:'HTML & CSS', status:'active',   enrolled:'Mar 2026' },
+  { id:6, name:'Kemi Balogun',      phone:'+234 806 789 0123', address:'Port Harcourt',  course:'HTML/CSS/JS',status:'inactive', enrolled:'Feb 2026' },
+];
+let nextId = 7;
+let deleteTarget = null;
+
+// ── PARTICLES ──
+const pc = document.getElementById('pts');
+for (let i = 0; i < 20; i++) {
+  const p = document.createElement('div');
+  p.className = 'pt';
+  const s = Math.random()*3+2;
+  p.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${Math.random()*14+9}s;animation-delay:-${Math.random()*14}s;`;
+  pc.appendChild(p);
+}
+
+// ── CARD TOGGLES ──
+function tog(btn) {
+  btn.classList.toggle('open');
+  const col = btn.nextElementSibling;
+  if (col) col.classList.toggle('open');
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── LOGIN ──
+function openLogin() {
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginErr').style.display = 'none';
+  document.getElementById('loginOverlay').classList.add('show');
+}
+function closeLogin() { document.getElementById('loginOverlay').classList.remove('show'); }
+
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  if (u === ADMIN_USER && p === ADMIN_PASS) {
+    closeLogin();
+    document.getElementById('adminOverlay').classList.add('show');
+    renderAdmin();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+  }
+}
+
+function doLogout() {
+  document.getElementById('adminOverlay').classList.remove('show');
+  showToast('Logged out successfully.');
+}
+
+// ── FILTER EVENTS ──
+['ap-srch','ap-course','ap-status'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('input', renderAdmin);
+  el.addEventListener('change', renderAdmin);
+});
+
+// ── RENDER ADMIN TABLE ──
+function renderAdmin() {
+  const srch   = document.getElementById('ap-srch').value.toLowerCase();
+  const course = document.getElementById('ap-course').value;
+  const status = document.getElementById('ap-status').value;
+
+  let data = students.filter(s =>
+    (!srch   || s.name.toLowerCase().includes(srch) || s.phone.includes(srch) || s.address.toLowerCase().includes(srch)) &&
+    (!course || s.course === course) &&
+    (!status || s.status === status)
+  );
+
+  // stats
+  document.getElementById('st-total').textContent    = students.length;
+  document.getElementById('st-active').textContent   = students.filter(s=>s.status==='active').length;
+  document.getElementById('st-inactive').textContent = students.filter(s=>s.status==='inactive').length;
+  document.getElementById('st-courses').textContent  = [...new Set(students.map(s=>s.course))].length;
+
+  const tbody = document.getElementById('adminTbody');
+  if (!data.length) {
+    tbody.innerHTML = '<div class="st-empty">No students match your filters.</div>';
+    return;
+  }
+
+  tbody.innerHTML = data.map(s => `
+    <div class="st-row">
+      <span class="sname">${s.name}</span>
+      <span>${s.phone}</span>
+      <span>${s.address}</span>
+      <span><div class="course-tag">${s.course}</div></span>
+      <span>
+        <button class="status-tag ${s.status}" onclick="toggleStatus(${s.id})" title="Click to toggle">
+          ${s.status === 'active' ? 'Active' : 'Inactive'}
+        </button>
+      </span>
+      <span>
+        <div class="act-btns">
+          <button class="act-btn btn-edit" onclick="openEdit(${s.id})">Edit</button>
+          <button class="act-btn btn-del"  onclick="askDelete(${s.id}, '${s.name.replace(/'/g,"\\'")}')">Remove</button>
+        </div>
+      </span>
+    </div>
+  `).join('');
+}
+
+// ── TOGGLE STATUS ──
+function toggleStatus(id) {
+  const s = students.find(x => x.id === id);
+  if (!s) return;
+  s.status = s.status === 'active' ? 'inactive' : 'active';
+  renderAdmin();
+  showToast(`${s.name} marked as ${s.status}.`);
+}
+
+// ── ADD / EDIT ──
+function openAdd() {
+  document.getElementById('modalTitle').textContent = 'Add Student';
+  document.getElementById('editId').value = '';
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-phone').value = '';
+  document.getElementById('f-address').value = '';
+  document.getElementById('f-course').value = 'HTML & CSS';
+  document.getElementById('f-status').value = 'active';
+  document.getElementById('f-enrolled').value = '';
+  document.getElementById('studentModal').classList.add('show');
+}
+
+function openEdit(id) {
+  const s = students.find(x => x.id === id);
+  if (!s) return;
+  document.getElementById('modalTitle').textContent = 'Edit Student';
+  document.getElementById('editId').value    = s.id;
+  document.getElementById('f-name').value    = s.name;
+  document.getElementById('f-phone').value   = s.phone;
+  document.getElementById('f-address').value = s.address;
+  document.getElementById('f-course').value  = s.course;
+  document.getElementById('f-status').value  = s.status;
+  document.getElementById('f-enrolled').value= s.enrolled;
+  document.getElementById('studentModal').classList.add('show');
+}
+
+function closeModal() { document.getElementById('studentModal').classList.remove('show'); }
+
+function saveStudent() {
+  const name     = document.getElementById('f-name').value.trim();
+  const phone    = document.getElementById('f-phone').value.trim();
+  const address  = document.getElementById('f-address').value.trim();
+  const course   = document.getElementById('f-course').value;
+  const status   = document.getElementById('f-status').value;
+  const enrolled = document.getElementById('f-enrolled').value.trim();
+  const eid      = document.getElementById('editId').value;
+
+  if (!name || !phone || !address) { showToast('Please fill in all required fields.'); return; }
+
+  if (eid) {
+    const s = students.find(x => x.id === parseInt(eid));
+    if (s) { s.name=name; s.phone=phone; s.address=address; s.course=course; s.status=status; s.enrolled=enrolled; }
+    showToast(`${name} updated successfully.`);
+  } else {
+    students.push({ id:nextId++, name, phone, address, course, status, enrolled: enrolled || 'N/A' });
+    showToast(`${name} added successfully.`);
+  }
+
+  closeModal();
+  renderAdmin();
+}
+
+// ── DELETE ──
+function askDelete(id, name) {
+  deleteTarget = id;
+  document.getElementById('confirmMsg').textContent = `Remove "${name}" from the student list? This cannot be undone.`;
+  document.getElementById('confirmWrap').classList.add('show');
+}
+function closeConfirm() { document.getElementById('confirmWrap').classList.remove('show'); deleteTarget = null; }
+function confirmDelete() {
+  if (deleteTarget === null) return;
+  const s = students.find(x => x.id === deleteTarget);
+  students = students.filter(x => x.id !== deleteTarget);
+  closeConfirm();
+  renderAdmin();
+  showToast(`${s ? s.name : 'Student'} removed.`);
+}
+</script>
+
+</body>
+</html>
+<script>
+// ── PUBLIC STUDENT LIST ──
+function renderPublic() {
+  const srchEl = document.getElementById('pub-srch');
+  const courseEl = document.getElementById('pub-course');
+  const statusEl = document.getElementById('pub-status');
+  if (!srchEl) return;
+  const srch   = srchEl.value.toLowerCase();
+  const course = courseEl.value;
+  const status = statusEl.value;
+
+  let data = students.filter(s =>
+    (!srch   || s.name.toLowerCase().includes(srch)) &&
+    (!course || s.course === course) &&
+    (!status || s.status === status)
+  );
+
+  const tbody = document.getElementById('pubTbody');
+  const noRes = document.getElementById('pubNoRes');
+
+  if (!data.length) { tbody.innerHTML=''; noRes.style.display='block'; return; }
+  noRes.style.display = 'none';
+
+  tbody.innerHTML = data.map((s, i) => `
+    <div style="display:grid;grid-template-columns:2fr 1.5fr 1fr;padding:11px 20px;border-bottom:1px solid rgba(255,255,255,.04);transition:background .2s;" onmouseover="this.style.background='rgba(100,80,220,.06)'" onmouseout="this.style.background=''">
+      <span style="font-size:13px;font-weight:600;color:#e8e4ff;display:flex;align-items:center;gap:7px;">
+        <span style="width:5px;height:5px;border-radius:50%;background:#7c6fcd;flex-shrink:0;display:inline-block;"></span>${s.name}
+      </span>
+      <span style="display:flex;align-items:center;">
+        <span style="font-size:10px;font-weight:600;padding:2px 9px;border-radius:10px;background:rgba(167,139,250,.14);border:1px solid rgba(167,139,250,.25);color:#a78bfa;">${s.course}</span>
+      </span>
+      <span style="display:flex;align-items:center;">
+        <span style="font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px;${s.status==='active'?'background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);color:#4ade80;':'background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.22);color:#f87171;'}">${s.status==='active'?'Active':'Inactive'}</span>
+      </span>
+    </div>
+  `).join('');
+}
+
+// wire public filters
+['pub-srch','pub-course','pub-status'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', renderPublic);
+    el.addEventListener('change', renderPublic);
+  }
+});
+
+// patch saveStudent & confirmDelete to also refresh public list
+const _origSave = window.saveStudent;
+window.saveStudent = function() { _origSave(); renderPublic(); };
+
+const _origDel = window.confirmDelete;
+window.confirmDelete = function() { _origDel(); renderPublic(); };
+
+const _origToggle = window.toggleStatus;
+window.toggleStatus = function(id) { _origToggle(id); renderPublic(); };
+
+renderPublic();
+</script>
